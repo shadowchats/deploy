@@ -13,6 +13,6 @@ data:
       }
       "PostgresConnectionStrings": {
         "ReadWrite": "Host=authentication-pgbouncer-rw.shadowchats.svc.cluster.local;Port=5432;Database=authentication-database;Username=authentication-user;Password=${POSTGRES_PASSWORD}",
-        "ReadOnly":  "Host=authentication-pgbouncer-rw.shadowchats.svc.cluster.local;Port=5432;Database=authentication-database;Username=authentication-user;Password=${POSTGRES_PASSWORD}"
+        "ReadOnly":  "Host=authentication-pgbouncer-ro.shadowchats.svc.cluster.local;Port=5432;Database=authentication-database;Username=authentication-user;Password=${POSTGRES_PASSWORD}"
       }
     }
