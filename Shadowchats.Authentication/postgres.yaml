@@ -12,7 +12,7 @@ spec:
       database: authentication-database
       owner: authentication-user
       passwordSecret:
-        name: authentication-postgres-secret
-        key: password
+        name: authentication-secret
+        key: postgres-password
   monitoring:
     enablePodMonitor: true
