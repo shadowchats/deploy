@@ -13,6 +13,6 @@ spec:
       owner: authentication-user
       passwordSecret:
         name: authentication-secret
-        key: postgres-password
+        key: POSTGRES_PASSWORD
   monitoring:
     enablePodMonitor: true
