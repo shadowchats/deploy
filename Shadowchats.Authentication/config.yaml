@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authentication-config
+  namespace: shadowchats
+data:
+  appsettings.json: |
+    {
+      "JwtSettings": {
+        "SecretKeyBase64": "${JWT_SECRET_KEY_BASE64}",
+        "Issuer": "Shadowchats",
+        "Audience": "ShadowchatsUsers"
+      }
+      "PostgresConnectionStrings": {
+        "ReadWrite": "Host=authentication-pgbouncer-rw.shadowchats.svc.cluster.local;Port=5432;Database=authentication-database;Username=authentication-user;Password=${POSTGRES_PASSWORD}",
+        "ReadOnly":  "Host=authentication-pgbouncer-rw.shadowchats.svc.cluster.local;Port=5432;Database=authentication-database;Username=authentication-user;Password=${POSTGRES_PASSWORD}"
+      }
+    }
