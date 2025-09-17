@@ -11,5 +11,8 @@ spec:
     initdb:
       database: authentication-database
       owner: authentication-user
+      passwordSecret:
+        name: authentication-postgres-secret
+        key: password
   monitoring:
     enablePodMonitor: true
