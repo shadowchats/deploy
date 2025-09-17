@@ -20,9 +20,6 @@ spec:
             - name: appsettings
               mountPath: /app/appsettings.json
               subPath: appsettings.json
-            - name: secret
-              mountPath: /app/secrets
-              readOnly: true
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
