@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-microservice
+  namespace: shadowchats
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: authentication-microservice
+  template:
+    metadata:
+      labels:
+        app: authentication-microservice
+    spec:
+      containers:
+        - name: authentication-microservice
+          image: shadowchats/authentication:latest
+          volumeMounts:
+            - name: appsettings
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+            - name: secret
+              mountPath: /app/secrets
+              readOnly: true
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: POSTGRES_PASSWORD
+            - name: JWT_SECRET_KEY_BASE64
+              valueFrom:
+                secretKeyRef:
+                  name: authentication-secret
+                  key: JWT_SECRET_KEY_BASE64
+      volumes:
+        - name: appsettings
+          configMap:
+            name: authentication-config
+            items:
+              - key: appsettings.json
+                path: appsettings.json
+        - name: secret
+          secret:
+            secretName: authentication-secret
