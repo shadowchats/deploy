@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentication-postgres
+  namespace: shadowchats
+spec:
+  instances: 2 # 1 Primary + 1 Standby
+  storage:
+    size: 10Gi
+  bootstrap:
+    initdb:
+      database: authentication-database
+      owner: authentication-user
+  monitoring:
+    enablePodMonitor: true
