@@ -20,24 +20,7 @@ spec:
             - name: appsettings
               mountPath: /app/appsettings.json
               subPath: appsettings.json
-          env:
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: authentication-secret
-                  key: POSTGRES_PASSWORD
-            - name: JWT_SECRET_KEY_BASE64
-              valueFrom:
-                secretKeyRef:
-                  name: authentication-secret
-                  key: JWT_SECRET_KEY_BASE64
       volumes:
         - name: appsettings
-          configMap:
-            name: authentication-config
-            items:
-              - key: appsettings.json
-                path: appsettings.json
-        - name: secret
           secret:
             secretName: authentication-secret
