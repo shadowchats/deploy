@@ -17,18 +17,18 @@ spec:
         - name: authentication
           image: shadowchats/authentication:latest
           ports:
-            - containerPort: 80
+            - containerPort: 5000
           volumeMounts:
             - name: appsettings
               mountPath: /app/appsettings.json
               subPath: appsettings.json
           resources:
             requests:
-              cpu: "100m"
-              memory: "128Mi"
+              cpu: "250m"
+              memory: "256Mi"
             limits:
-              cpu: "500m"
-              memory: "512Mi"
+              cpu: "1000m"
+              memory: "1Gi"
       volumes:
         - name: appsettings
           secret:
