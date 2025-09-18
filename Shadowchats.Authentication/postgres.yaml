@@ -9,8 +9,8 @@ spec:
     size: 10Gi
   bootstrap:
     initdb:
-      database: authentication-database
-      owner: authentication-user
+      database: authentication
+      owner: authentication
       passwordSecret:
         name: authentication-secret
         key: postgres-password
