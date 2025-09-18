@@ -1,25 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: authentication-microservice
+  name: authentication
   namespace: shadowchats
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: authentication-microservice
+      app: authentication
   template:
     metadata:
       labels:
-        app: authentication-microservice
+        app: authentication
     spec:
       containers:
-        - name: authentication-microservice
+        - name: authentication
           image: shadowchats/authentication:latest
+          ports:
+            - containerPort: 80
           volumeMounts:
             - name: appsettings
               mountPath: /app/appsettings.json
               subPath: appsettings.json
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
       volumes:
         - name: appsettings
           secret:
