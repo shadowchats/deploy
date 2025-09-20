@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: authentication
-          image: shadowchats/authentication:latest
+          image: one290/shadowchats:authentication-v0.0.0
           ports:
             - containerPort: 5000
           volumeMounts:
