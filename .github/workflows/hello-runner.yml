@@ -1,0 +1,11 @@
+name: Hello Runner
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, Linux, X64, local-minikube]
+    steps:
+      - name: Say hello
+        run: echo "Hello from self-hosted runner on $(hostname)"
