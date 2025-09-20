@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: shadowchats/api-gateway:latest
+          image: one290/shadowchats:api-gateway-v0.0.0
           ports:
             - containerPort: 5000
           volumeMounts:
