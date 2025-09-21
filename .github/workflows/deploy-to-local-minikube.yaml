@@ -4,14 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       service:
-        description: "Выберите сервис для деплоя"
+        description: "Select the service to deploy"
         required: true
         type: choice
         options:
           - authentication
           - api-gateway
       version:
-        description: "Версия (оставьте пустым для latest)"
+        description: "Version (leave empty to use the latest)"
         required: false
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Checkout deploy repo
+      - name: Checkout deploy repository
         uses: actions/checkout@v4
 
       - name: Install tools (yq + jq + curl)
@@ -29,7 +29,7 @@ jobs:
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
 
-      - name: Определить версию
+      - name: Determine service version
         id: get_version
         run: |
           SERVICE="${{ github.event.inputs.service }}"
@@ -38,31 +38,31 @@ jobs:
           if [ -n "$INPUT_VERSION" ]; then
             VERSION="$INPUT_VERSION"
           else
-            echo "Версия не указана — ищу последнюю для $SERVICE..."
+            echo "Version not specified — fetching latest for $SERVICE..."
             VERSION=$(curl -s "https://registry.hub.docker.com/v2/repositories/one290/shadowchats/tags?page_size=100" \
               | jq -r --arg SERVICE "$SERVICE" '.results[].name | select(startswith($SERVICE + "-v"))' \
               | sort -V | tail -n 1)
           fi
 
           if [ -z "$VERSION" ]; then
-            echo "❌ Версия для сервиса $SERVICE не найдена!"
+            echo "❌ Version for service $SERVICE not found!"
             exit 1
           fi
 
           echo "service=$SERVICE" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
-      - name: Обновить deployment.yaml
+      - name: Update deployment.yaml
         run: |
           SERVICE="${{ steps.get_version.outputs.service }}"
           VERSION="${{ steps.get_version.outputs.version }}"
 
-          echo "⚙️ Обновляю $SERVICE/deployment.yaml -> one290/shadowchats:${VERSION}"
+          echo "Updating $SERVICE/deployment.yaml -> one290/shadowchats:${VERSION}"
           yq e -i ".spec.template.spec.containers[0].image = \"one290/shadowchats:${VERSION}\"" $SERVICE/deployment.yaml
 
-      - name: Применить все манифесты сервиса
+      - name: Apply service manifests
         run: |
           SERVICE="${{ steps.get_version.outputs.service }}"
-          echo "🚀 Применяю манифесты из $SERVICE/"
+          echo "Applying manifests from $SERVICE/"
           kubectl apply -f $SERVICE/
           kubectl rollout status -f $SERVICE/deployment.yaml
