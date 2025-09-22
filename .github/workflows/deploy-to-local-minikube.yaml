@@ -10,9 +10,6 @@ on:
         options:
           - authentication
           - api-gateway
-      version:
-        description: "Version (leave empty to use the latest)"
-        required: false
 
 jobs:
   deploy:
@@ -22,27 +19,23 @@ jobs:
       - name: Checkout deploy repository
         uses: actions/checkout@v4
 
-      - name: Install tools (yq + jq + curl)
+      - name: Install tools (yq)
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y jq curl
+          sudo apt-get install -y wget
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
           sudo chmod +x /usr/local/bin/yq
 
       - name: Determine service version
         id: get_version
         run: |
+          set -e
           SERVICE="${{ github.event.inputs.service }}"
-          INPUT_VERSION="${{ github.event.inputs.version }}"
 
-          if [ -n "$INPUT_VERSION" ]; then
-            VERSION="$INPUT_VERSION"
-          else
-            echo "Version not specified — fetching latest for $SERVICE..."
-            VERSION=$(curl -s "https://registry.hub.docker.com/v2/repositories/one290/shadowchats/tags?page_size=100" \
-              | jq -r --arg SERVICE "$SERVICE" '.results[].name | select(startswith($SERVICE + "-v"))' \
-              | sort -V | tail -n 1)
-          fi
+          # Клонируем репозиторий сервиса
+          git clone --depth 1 "https://github.com/shadowchats/${SERVICE}.git" tmp_service_repo
+          
+          VERSION=$(cat tmp_service_repo/VERSION | tr -d ' \n')
 
           if [ -z "$VERSION" ]; then
             echo "❌ Version for service $SERVICE not found!"
@@ -57,12 +50,12 @@ jobs:
           SERVICE="${{ steps.get_version.outputs.service }}"
           VERSION="${{ steps.get_version.outputs.version }}"
 
-          echo "Updating $SERVICE/deployment.yaml -> one290/shadowchats:${VERSION}"
-          yq e -i ".spec.template.spec.containers[0].image = \"one290/shadowchats:${VERSION}\"" $SERVICE/deployment.yaml
+          echo "Updating $SERVICE/deployment.yaml -> one290/shadowchats:${SERVICE}-v${VERSION}"
+          yq e -i ".spec.template.spec.containers[0].image = \"one290/shadowchats:${SERVICE}-v${VERSION}\"" $SERVICE/deployment.yaml
 
       - name: Apply service manifests
         run: |
           SERVICE="${{ steps.get_version.outputs.service }}"
           echo "Applying manifests from $SERVICE/"
-          kubectl apply -f $SERVICE/
-          kubectl rollout status -f $SERVICE/deployment.yaml
+          kubectl apply -f $SERVICE/deployment.yaml
+          kubectl rollout status deployment/$SERVICE
