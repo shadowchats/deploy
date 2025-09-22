@@ -46,6 +46,6 @@ For questions about licensing or to request source code:
 6. Выполни конвейеры `build-and-push.yaml` в репозиториях микросервисов и конвейер `deploy-to-local-minikube.yaml` в этом репозитории для каждого микросервиса.
 7. Проверка: `kubectl get all -n shadowchats`.
 
-### После первого
+### Остальные
 
 Повторять пункт 5.
