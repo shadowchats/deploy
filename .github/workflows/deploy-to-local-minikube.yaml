@@ -35,10 +35,10 @@ jobs:
           # Клонируем репозиторий сервиса
           git clone --depth 1 "https://github.com/shadowchats/${SERVICE}.git" tmp_service_repo
           
-          VERSION=$(cat tmp_service_repo/VERSION | tr -d ' \n')
+          VERSION=$(cat tmp_service_repo/CURRENT_VERSION | tr -d ' \n')
 
           if [ -z "$VERSION" ]; then
-            echo "❌ Version for service $SERVICE not found!"
+            echo "❌ CURRENT_VERSION for service $SERVICE not found!"
             exit 1
           fi
 
@@ -53,9 +53,8 @@ jobs:
           echo "Updating $SERVICE/deployment.yaml -> one290/shadowchats:${SERVICE}-v${VERSION}"
           yq e -i ".spec.template.spec.containers[0].image = \"one290/shadowchats:${SERVICE}-v${VERSION}\"" $SERVICE/deployment.yaml
 
-      - name: Apply service manifests
+      - name: Apply Deployment
         run: |
           SERVICE="${{ steps.get_version.outputs.service }}"
-          echo "Applying manifests from $SERVICE/"
           kubectl apply -f $SERVICE/deployment.yaml
           kubectl rollout status deployment/$SERVICE
