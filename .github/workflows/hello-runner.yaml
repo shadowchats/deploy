@@ -5,7 +5,7 @@ on:
 
 jobs:
   test:
-    runs-on: [self-hosted, Linux, X64, local-minikube]
+    runs-on: [self-hosted, Linux, X64]
     steps:
       - name: Say hello
         run: echo "Hello from self-hosted runner on $(hostname)"
