@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vault
+  namespace: vault
+  labels:
+    app: vault
+spec:
+  serviceName: "vault-internal"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      # Pass pod name into Vault config using env var
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "mkdir -p /vault/data /vault/config && chown -R 100:100 /vault && chmod -R 700 /vault"]
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: data
+              mountPath: /vault/data
+            - name: config
+              mountPath: /vault/config
+      containers:
+        - name: vault
+          image: hashicorp/vault:1.17.6
+          imagePullPolicy: IfNotPresent
+          args:
+            - "server"
+            - "-config=/vault/config/vault.hcl"
+          env:
+            - name: K8S_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: VAULT_LOCAL_CONFIG
+              value: ""
+            - name: VAULT_API_ADDR
+              value: "http://vault.vault.svc.cluster.local:8200"
+          ports:
+            - name: http
+              containerPort: 8200
+            - name: cluster
+              containerPort: 8201
+          livenessProbe:
+            httpGet:
+              path: /v1/sys/health
+              port: http
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /v1/sys/health?standbyok=true
+              port: http
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+            - name: data
+              mountPath: /vault/data
+            - name: config
+              mountPath: /vault/config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: vault-config
+            items:
+              - key: vault.hcl
+                path: vault.hcl
+  template:
+    metadata:
+      labels:
+        app: vault
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 2Gi
