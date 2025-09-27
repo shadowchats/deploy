@@ -78,10 +78,6 @@ spec:
             items:
               - key: vault.hcl
                 path: vault.hcl
-  template:
-    metadata:
-      labels:
-        app: vault
   volumeClaimTemplates:
     - metadata:
         name: data
