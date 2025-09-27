@@ -13,7 +13,7 @@ spec:
       targetPort: 8200
     - name: cluster
       port: 8201
-     targetPort: 8201
+      targetPort: 8201
   selector:
     app: vault
 ---
