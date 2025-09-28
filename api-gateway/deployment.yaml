@@ -22,12 +22,25 @@ spec:
         app: api-gateway
     spec:
       containers:
+        - name: vault-agent
+          image: hashicorp/vault:1.17.6
+          args: ["vault", "agent", "-config=/vault/config/vault-agent.hcl"]
+          env:
+            - name: VAULT_ADDR
+              value: "http://vault.vault.svc.cluster.local:8200"
+          volumeMounts:
+            - name: vault-config
+              mountPath: /vault/config
+            - name: vault-templates
+              mountPath: /vault/templates
+            - name: vault-secrets
+              mountPath: /vault/secrets
         - name: api-gateway
           image: one290/shadowchats:api-gateway-v0.0.0
           ports:
             - containerPort: 5000
           volumeMounts:
-            - name: appsettings
+            - name: vault-secrets
               mountPath: /app/appsettings.json
               subPath: appsettings.json
           resources:
@@ -38,6 +51,11 @@ spec:
               cpu: "1000m"
               memory: "1Gi"
       volumes:
-        - name: appsettings
-          secret:
-            secretName: api-gateway-secret
+        - name: vault-config
+          configMap:
+            name: vault-agent-api-gateway-config
+        - name: vault-templates
+          configMap:
+            name: vault-templates-api-gateway
+        - name: vault-secrets
+          emptyDir: {}
