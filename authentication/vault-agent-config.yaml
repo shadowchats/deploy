@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-agent-authentication-config
+  namespace: shadowchats
+data:
+  vault-agent.hcl: |
+    auto_auth {
+      method "kubernetes" {
+        mount_path = "auth/kubernetes"
+        config = {
+          role = "authentication-role"
+        }
+      }
+    }
+    template {
+      source      = "/vault/templates/authentication-appsettings.json.tpl"
+      destination = "/vault/secrets/appsettings.json"
+    }
