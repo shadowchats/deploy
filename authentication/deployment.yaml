@@ -22,12 +22,25 @@ spec:
         app: authentication
     spec:
       containers:
+        - name: vault-agent
+          image: hashicorp/vault:1.17.6
+          args: ["vault", "agent", "-config=/vault/config/vault-agent.hcl"]
+          env:
+            - name: VAULT_ADDR
+              value: "http://vault.vault.svc.cluster.local:8200"
+          volumeMounts:
+            - name: vault-config
+              mountPath: /vault/config
+            - name: vault-templates
+              mountPath: /vault/templates
+            - name: vault-secrets
+              mountPath: /vault/secrets
         - name: authentication
           image: one290/shadowchats:authentication-v0.0.0
           ports:
             - containerPort: 5000
           volumeMounts:
-            - name: appsettings
+            - name: vault-secrets
               mountPath: /app/appsettings.json
               subPath: appsettings.json
           resources:
@@ -38,6 +51,11 @@ spec:
               cpu: "1000m"
               memory: "1Gi"
       volumes:
-        - name: appsettings
-          secret:
-            secretName: authentication-secret
+        - name: vault-config
+          configMap:
+            name: vault-agent-authentication-config
+        - name: vault-templates
+          configMap:
+            name: vault-templates-authentication
+        - name: vault-secrets
+          emptyDir: {}
