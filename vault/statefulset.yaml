@@ -7,7 +7,7 @@ metadata:
     app: vault
 spec:
   serviceName: "vault-internal"
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: vault
@@ -51,7 +51,7 @@ spec:
               containerPort: 8201
           livenessProbe:
             httpGet:
-              path: /v1/sys/health
+              path: /v1/sys/health?standbyok=true
               port: http
             initialDelaySeconds: 15
             timeoutSeconds: 5
