@@ -20,6 +20,6 @@ spec:
       database: authentication
       owner: authentication
       secret:
-        name: authentication-secret
+        name: postgres-secret
   monitoring:
     enablePodMonitor: true
