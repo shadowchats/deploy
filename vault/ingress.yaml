@@ -4,6 +4,7 @@ metadata:
   name: vault-ingress
   namespace: vault
 spec:
+  ingressClassName: nginx
   rules:
     - host: vault.local
       http:
