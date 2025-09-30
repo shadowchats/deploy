@@ -5,10 +5,10 @@ metadata:
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "5"
-    argocd-image-updater.argoproj.io/image-list: dockerhub-repository=docker.io/one290/shadowchats
-    argocd-image-updater.argoproj.io/dockerhub-repository.update-strategy: semver
-    argocd-image-updater.argoproj.io/dockerhub-repository.allow-tags: regexp:^authentication-v[0-9]+\.[0-9]+\.[0-9]+$
-    argocd-image-updater.argoproj.io/dockerhub-repository.pull-secret: pullsecret:argocd/dockerhub-secret
+    argocd-image-updater.argoproj.io/image-list: shadowchats=docker.io/one290/shadowchats
+    argocd-image-updater.argoproj.io/shadowchats.update-strategy: semver
+    argocd-image-updater.argoproj.io/shadowchats.allow-tags: regexp:^authentication-v[0-9]+\.[0-9]+\.[0-9]+$
+    argocd-image-updater.argoproj.io/shadowchats.pull-secret: pullsecret:argocd/dockerhub-secret
 spec:
   project: default
   source:
