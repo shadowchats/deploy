@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-image-updater-config
+  namespace: argocd
+data:
+  config.yaml: |
+    registries:
+      - name: DockerHub
+        api_url: https://index.docker.io/v1/
+        prefix: docker.io
+        ping: yes
+        credentials: secret:argocd/dockerhub-secret
+    git:
+      write-back-method: git
+      repos:
+        - url: https://github.com/shadowchats/deploy.git
+          usernameSecret:
+            name: argocd-image-updater-git-creds
+            key: username
+          passwordSecret:
+            name: argocd-image-updater-git-creds
+            key: password
