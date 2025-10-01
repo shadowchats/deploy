@@ -39,6 +39,18 @@ spec:
           image: one290/shadowchats:api-gateway-v0.0.0
           ports:
             - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
           volumeMounts:
             - name: vault-secrets
               mountPath: /app/appsettings.json
