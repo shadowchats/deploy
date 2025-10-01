@@ -22,14 +22,6 @@ spec:
         app: authentication
     spec:
       initContainers:
-        - name: migrate
-          image: one290/shadowchats:authentication-v0.0.0
-          command: ["dotnet", "Shadowchats.Authentication.Presentation.dll", "migrate"]
-          volumeMounts:
-            - name: vault-secrets
-              mountPath: /app/appsettings.json
-              subPath: appsettings.json
-      containers:
         - name: vault-agent
           image: hashicorp/vault:1.17.6
           args: ["vault", "agent", "-config=/vault/config/vault-agent.hcl"]
@@ -43,6 +35,14 @@ spec:
               mountPath: /vault/templates
             - name: vault-secrets
               mountPath: /vault/secrets
+        - name: migrate
+          image: one290/shadowchats:authentication-v0.0.0
+          command: ["dotnet", "Shadowchats.Authentication.Presentation.dll", "migrate"]
+          volumeMounts:
+            - name: vault-secrets
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+      containers:
         - name: authentication
           image: one290/shadowchats:authentication-v0.0.0
           ports:
