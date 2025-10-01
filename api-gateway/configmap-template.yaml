@@ -44,7 +44,7 @@ data:
                 "Timeout": "00:00:05",
                 "Policy": "ConsecutiveFailures",
                 "FailureThreshold": 2,
-                "Path": "/health"
+                "Path": "/ready"
               },
               "Passive": {
                 "Enabled": true,
