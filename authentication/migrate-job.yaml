@@ -11,17 +11,37 @@ spec:
     spec:
       restartPolicy: OnFailure
       initContainers:
-        - name: vault-agent
+        - name: vault-agent-init
           image: hashicorp/vault:1.17.6
           args: ["vault", "agent", "-config=/vault/config/vault-agent.hcl"]
+          env:
+            - name: VAULT_ADDR
+              value: "http://vault.vault.svc.cluster.local:8200"
           volumeMounts:
-            - name: vault-agent-config
-            mountPath: /vault/config
+            - name: vault-config-init
+              mountPath: /vault/config
+            - name: vault-templates
+              mountPath: /vault/templates
+            - name: vault-secrets
+              mountPath: /vault/secrets
+
       containers:
         - name: migrate
           image: one290/shadowchats:authentication-v0.0.0
           command: ["dotnet", "Shadowchats.Authentication.Presentation.dll", "migrate"]
+          volumeMounts:
+            - name: vault-secrets
+              mountPath: /app/appsettings.json
+              subPath: appsettings.json
+
       volumes:
-        - name: vault-agent-config
+        - name: vault-config-init
           configMap:
             name: vault-agent-authentication-init
+
+        - name: vault-templates
+          configMap:
+            name: vault-templates-authentication
+
+        - name: vault-secrets
+          emptyDir: {}
