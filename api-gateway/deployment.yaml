@@ -22,14 +22,14 @@ spec:
         app: api-gateway
     spec:
       initContainers:
-        - name: vault-agent
+        - name: vault-agent-init
           image: hashicorp/vault:1.17.6
           args: ["vault", "agent", "-config=/vault/config/vault-agent.hcl"]
           env:
             - name: VAULT_ADDR
               value: "http://vault.vault.svc.cluster.local:8200"
           volumeMounts:
-            - name: vault-config
+            - name: vault-config-init
               mountPath: /vault/config
             - name: vault-templates
               mountPath: /vault/templates
@@ -63,10 +63,26 @@ spec:
             limits:
               cpu: "1000m"
               memory: "1Gi"
+        - name: vault-agent-sidecar
+          image: hashicorp/vault:1.17.6
+          args: ["vault", "agent", "-config=/vault/config/vault-agent.hcl"]
+          env:
+            - name: VAULT_ADDR
+              value: "http://vault.vault.svc.cluster.local:8200"
+          volumeMounts:
+            - name: vault-config-sidecar
+              mountPath: /vault/config
+            - name: vault-templates
+              mountPath: /vault/templates
+            - name: vault-secrets
+              mountPath: /vault/secrets
       volumes:
-        - name: vault-config
+        - name: vault-config-init
           configMap:
-            name: vault-agent-api-gateway-config
+            name: vault-agent-api-gateway-init
+        - name: vault-config-sidecar
+          configMap:
+            name: vault-agent-api-gateway-sidecar
         - name: vault-templates
           configMap:
             name: vault-templates-api-gateway
