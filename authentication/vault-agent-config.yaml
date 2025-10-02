@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: vault-agent-authentication-config
+  name: vault-agent-authentication-sidecar
   namespace: shadowchats
 data:
   vault-agent.hcl: |
@@ -13,6 +13,27 @@ data:
         }
       }
     }
+    template {
+      source      = "/vault/templates/authentication-appsettings.json.tpl"
+      destination = "/vault/secrets/appsettings.json"
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-agent-authentication-init
+  namespace: shadowchats
+data:
+  vault-agent.hcl: |
+    auto_auth {
+      method "kubernetes" {
+        mount_path = "auth/kubernetes"
+        config = {
+          role = "authentication-role"
+        }
+      }
+    }
+    exit_after_auth = true
     template {
       source      = "/vault/templates/authentication-appsettings.json.tpl"
       destination = "/vault/secrets/appsettings.json"
