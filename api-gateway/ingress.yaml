@@ -11,8 +11,6 @@ kind: Ingress
 metadata:
   name: api-gateway
   namespace: shadowchats
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   rules:
