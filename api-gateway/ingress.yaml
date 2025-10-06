@@ -11,6 +11,8 @@ kind: Ingress
 metadata:
   name: api-gateway
   namespace: shadowchats
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   rules:
