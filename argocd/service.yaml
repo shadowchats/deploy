@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: argocd-server
+  namespace: argocd
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080  # порт контейнера ArgoCD UI
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: argocd-server
