@@ -19,3 +19,5 @@ data:
 
     api_addr = "http://vault.vault.svc.cluster.local:8200"
     cluster_addr = "https://vault-internal.vault.svc.cluster.local:8201"
+
+    disable_mlock = true
