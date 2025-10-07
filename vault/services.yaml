@@ -9,8 +9,8 @@ spec:
   clusterIP: None
   ports:
     - name: http
-      port: 8200
-      targetPort: 8200
+      port: 8205
+      targetPort: 8205
     - name: cluster
       port: 8201
       targetPort: 8201
@@ -28,7 +28,7 @@ spec:
   type: ClusterIP
   ports:
     - name: http
-      port: 8200
-      targetPort: 8200
+      port: 8205
+      targetPort: 8205
   selector:
     app: vault
