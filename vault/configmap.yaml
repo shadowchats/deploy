@@ -8,15 +8,14 @@ data:
     ui = true
 
     listener "tcp" {
-      address     = "0.0.0.0:8200"
-      tls_disable = 1 # отключаем TLS для Minikube/demo
+      address = "0.0.0.0:8200"
+      tls_disable = 1 # for minikube/demo only — enable TLS in prod
     }
 
     storage "raft" {
-      path    = "/vault/data"
-      node_id = "${K8S_POD_NAME}" # под name из StatefulSet
+      path = "/vault/data"
+      node_id = "${K8S_POD_NAME}"
     }
 
-    # Адреса Vault для API и кластера
-    api_addr     = "http://vault.vault.svc.cluster.local:8200"
-    cluster_addr = "http://vault-internal.vault.svc.cluster.local:8201"
+    api_addr = "http://vault.vault.svc.cluster.local:8200"
+    cluster_addr = "https://vault-internal.vault.svc.cluster.local:8201"
