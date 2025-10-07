@@ -50,10 +50,10 @@ spec:
             - name: SKIP_SETCAP           # ← ДОБАВИТЬ
               value: "true"               # ← ДОБАВИТЬ
             - name: VAULT_ADDR
-              value: "http://127.0.0.1:8200"
+              value: "http://127.0.0.1:8205"
           ports:
             - name: http
-              containerPort: 8200
+              containerPort: 8205
             - name: cluster
               containerPort: 8201
           livenessProbe:
