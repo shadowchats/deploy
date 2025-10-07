@@ -16,13 +16,11 @@ spec:
       labels:
         app: vault
     spec:
-      # --- Общий securityContext для пода ---
       securityContext:
-        fsGroup: 100
-        runAsUser: 100
-        runAsGroup: 100
-
-      # --- Init контейнер для /vault/data ---
+        fsGroup: 100        # ← ДОБАВИТЬ
+        runAsUser: 100      # ← ДОБАВИТЬ
+        runAsGroup: 100     # ← ДОБАВИТЬ
+      
       initContainers:
         - name: fix-permissions
           image: busybox
@@ -38,8 +36,7 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /vault/data
-
-      # --- Основной контейнер Vault ---
+      
       containers:
         - name: vault
           image: hashicorp/vault:1.17.6
@@ -48,21 +45,10 @@ spec:
             - "server"
             - "-config=/vault/config/vault.hcl"
           env:
-            - name: SKIP_CHOWN
-              value: "true"
-            - name: SKIP_SETCAP
-              value: "true"
-            - name: K8S_POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: VAULT_LOCAL_CONFIG
-              value: |
-                storage "raft" {
-                  path    = "/vault/data"
-                  node_id = "${K8S_POD_NAME}"
-                }
-                disable_mlock = true
+            - name: SKIP_CHOWN            # ← ДОБАВИТЬ
+              value: "true"               # ← ДОБАВИТЬ
+            - name: SKIP_SETCAP           # ← ДОБАВИТЬ
+              value: "true"               # ← ДОБАВИТЬ
             - name: VAULT_ADDR
               value: "http://127.0.0.1:8200"
           ports:
@@ -74,7 +60,7 @@ spec:
             httpGet:
               path: /v1/sys/health?standbyok=true
               port: http
-            initialDelaySeconds: 30
+            initialDelaySeconds: 30      # ← УВЕЛИЧИТЬ (было 15)
             timeoutSeconds: 5
             periodSeconds: 10
             failureThreshold: 3
@@ -82,7 +68,7 @@ spec:
             httpGet:
               path: /v1/sys/health?standbyok=true
               port: http
-            initialDelaySeconds: 10
+            initialDelaySeconds: 10      # ← УВЕЛИЧИТЬ (было 5)
             timeoutSeconds: 5
             periodSeconds: 10
             failureThreshold: 3
@@ -91,19 +77,17 @@ spec:
               mountPath: /vault/data
             - name: config
               mountPath: /vault/config
-              readOnly: true
-
-      # --- Том для конфигурации (ConfigMap) ---
+              readOnly: true             # ← ЯВНО УКАЗАТЬ
+      
       volumes:
         - name: config
           configMap:
             name: vault-config
-            defaultMode: 0644
+            defaultMode: 0644            # ← ДОБАВИТЬ
             items:
               - key: vault.hcl
                 path: vault.hcl
-
-  # --- Персистентное хранилище для данных ---
+  
   volumeClaimTemplates:
     - metadata:
         name: data
