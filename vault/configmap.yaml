@@ -8,7 +8,7 @@ data:
     ui = true
 
     listener "tcp" {
-      address = "0.0.0.0:8200"
+      address = "0.0.0.0:8205"
       tls_disable = 1
     }
 
@@ -17,7 +17,7 @@ data:
       node_id = "vault-0"
     }
 
-    api_addr = "http://vault.vault.svc.cluster.local:8200"
+    api_addr = "http://vault.vault.svc.cluster.local:8205"
     cluster_addr = "http://vault-internal.vault.svc.cluster.local:8201"
 
     disable_mlock = true
