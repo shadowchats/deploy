@@ -16,18 +16,24 @@ spec:
       labels:
         app: vault
     spec:
-      # Pass pod name into Vault config using env var
+      # Init container: только для data (не трогает config)
       initContainers:
         - name: fix-permissions
           image: busybox
-          command: ["sh", "-c", "mkdir -p /vault/data /vault/config && chown -R 100:100 /vault && chmod -R 700 /vault"]
+          command:
+            - sh
+            - -c
+            - |
+              echo "Fixing permissions for /vault/data..."
+              mkdir -p /vault/data
+              chown -R 100:100 /vault/data
+              chmod -R 700 /vault/data
           securityContext:
             runAsUser: 0
           volumeMounts:
             - name: data
               mountPath: /vault/data
-            - name: config
-              mountPath: /vault/config
+
       containers:
         - name: vault
           image: hashicorp/vault:1.17.6
@@ -40,8 +46,6 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: VAULT_LOCAL_CONFIG
-              value: ""
             - name: VAULT_API_ADDR
               value: "http://vault.vault.svc.cluster.local:8200"
           ports:
@@ -71,6 +75,11 @@ spec:
             - name: config
               mountPath: /vault/config
               readOnly: true
+          securityContext:
+            runAsUser: 100
+            runAsGroup: 100
+            fsGroup: 100
+
       volumes:
         - name: config
           configMap:
@@ -78,6 +87,7 @@ spec:
             items:
               - key: vault.hcl
                 path: vault.hcl
+
   volumeClaimTemplates:
     - metadata:
         name: data
