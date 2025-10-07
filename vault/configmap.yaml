@@ -14,7 +14,7 @@ data:
 
     storage "raft" {
       path = "/vault/data"
-      # node_id убираем, будем задавать через VAULT_LOCAL_CONFIG
+      node_id = "vault-0"
     }
 
     api_addr = "http://vault.vault.svc.cluster.local:8200"
