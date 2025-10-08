@@ -95,16 +95,19 @@ spec:
               containerPort: 8201
           livenessProbe:
             httpGet:
-              path: /v1/sys/health?standbyok=true
-              port: 8200
-            initialDelaySeconds: 60
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /v1/sys/health?standbyok=true
+              path: /v1/sys/health?standbyok=true&sealedcode=200&uninitcode=200
               port: 8200
             initialDelaySeconds: 30
             periodSeconds: 10
+            timeoutSeconds: 5
+
+          readinessProbe:
+            httpGet:
+              path: /v1/sys/health?standbyok=true&sealedcode=200&uninitcode=200
+              port: 8200
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
           volumeMounts:
             - name: data
               mountPath: /vault/data
