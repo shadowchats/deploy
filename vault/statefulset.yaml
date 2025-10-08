@@ -41,6 +41,8 @@ spec:
         # 2️⃣ Генерируем vault.hcl с подстановкой имени пода
         - name: generate-config
           image: alpine:3.20
+          securityContext:
+            runAsUser: 0
           env:
             - name: POD_NAME
               valueFrom:
