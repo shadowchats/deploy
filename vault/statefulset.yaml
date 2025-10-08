@@ -3,8 +3,6 @@ kind: StatefulSet
 metadata:
   name: vault
   namespace: vault
-  labels:
-    app: vault
 spec:
   serviceName: "vault-internal"
   replicas: 1
@@ -17,9 +15,9 @@ spec:
         app: vault
     spec:
       securityContext:
-        fsGroup: 100        # ← ДОБАВИТЬ
-        runAsUser: 100      # ← ДОБАВИТЬ
-        runAsGroup: 100     # ← ДОБАВИТЬ
+        fsGroup: 100
+        runAsUser: 100
+        runAsGroup: 100
       
       initContainers:
         - name: fix-permissions
@@ -40,53 +38,57 @@ spec:
       containers:
         - name: vault
           image: hashicorp/vault:1.17.6
-          imagePullPolicy: IfNotPresent
-          args:
-            - "server"
-            - "-config=/vault/config/vault.hcl"
+          command:
+            - vault
+            - server
+            - -config=/dev/stdin
+          stdin: true
           env:
-            - name: SKIP_CHOWN            # ← ДОБАВИТЬ
-              value: "true"               # ← ДОБАВИТЬ
-            - name: SKIP_SETCAP           # ← ДОБАВИТЬ
-              value: "true"               # ← ДОБАВИТЬ
-            - name: VAULT_ADDR
-              value: "http://127.0.0.1:8205"
+            - name: SKIP_CHOWN
+              value: "true"
+            - name: SKIP_SETCAP
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: VAULT_LOCAL_CONFIG
+              value: |
+                ui = true
+                disable_mlock = true
+                
+                listener "tcp" {
+                  address = "0.0.0.0:8200"
+                  tls_disable = 1
+                }
+                
+                storage "raft" {
+                  path = "/vault/data"
+                  node_id = "$(POD_NAME)"
+                }
+                
+                api_addr = "http://vault.vault.svc.cluster.local:8200"
+                cluster_addr = "http://$(POD_NAME).vault-internal.vault.svc.cluster.local:8201"
           ports:
             - name: http
-              containerPort: 8205
+              containerPort: 8200
             - name: cluster
               containerPort: 8201
           livenessProbe:
             httpGet:
               path: /v1/sys/health?standbyok=true
-              port: http
-            initialDelaySeconds: 30      # ← УВЕЛИЧИТЬ (было 15)
-            timeoutSeconds: 5
+              port: 8200
+            initialDelaySeconds: 60
             periodSeconds: 10
-            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /v1/sys/health?standbyok=true
-              port: http
-            initialDelaySeconds: 10      # ← УВЕЛИЧИТЬ (было 5)
-            timeoutSeconds: 5
+              port: 8200
+            initialDelaySeconds: 30
             periodSeconds: 10
-            failureThreshold: 3
           volumeMounts:
             - name: data
               mountPath: /vault/data
-            - name: config
-              mountPath: /vault/config
-              readOnly: true             # ← ЯВНО УКАЗАТЬ
-      
-      volumes:
-        - name: config
-          configMap:
-            name: vault-config
-            defaultMode: 0644            # ← ДОБАВИТЬ
-            items:
-              - key: vault.hcl
-                path: vault.hcl
   
   volumeClaimTemplates:
     - metadata:
