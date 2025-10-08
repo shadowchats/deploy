@@ -18,53 +18,68 @@ spec:
         fsGroup: 100
         runAsUser: 100
         runAsGroup: 100
-      
+
       initContainers:
+        # 1. Исправляем права на /vault/data
         - name: fix-permissions
           image: busybox
-          command: 
+          command:
             - sh
             - -c
             - |
-              mkdir -p /vault/data
-              chown -R 100:100 /vault/data
+              mkdir -p /vault/data /vault/config
+              chown -R 100:100 /vault
               chmod -R 700 /vault/data
           securityContext:
             runAsUser: 0
           volumeMounts:
             - name: data
               mountPath: /vault/data
-      
+            - name: config
+              mountPath: /vault/config
+
+        # 2. Генерируем vault.hcl с подстановкой $(POD_NAME)
+        - name: generate-config
+          image: bash:5
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          command:
+            - sh
+            - -c
+            - |
+              cat <<EOF | envsubst > /vault/config/vault.hcl
+              ui = true
+              disable_mlock = true
+
+              listener "tcp" {
+                address = "0.0.0.0:8200"
+                tls_disable = 1
+              }
+
+              storage "raft" {
+                path = "/vault/data"
+                node_id = "${POD_NAME}"
+              }
+
+              api_addr = "http://vault.vault.svc.cluster.local:8200"
+              cluster_addr = "http://${POD_NAME}.vault-internal.vault.svc.cluster.local:8201"
+              EOF
+          volumeMounts:
+            - name: config
+              mountPath: /vault/config
+
       containers:
         - name: vault
           image: hashicorp/vault:1.17.6
-          command: ["vault", "server"]
+          command: ["vault", "server", "-config=/vault/config/vault.hcl"]
           env:
             - name: SKIP_CHOWN
               value: "true"
             - name: SKIP_SETCAP
               value: "true"
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: VAULT_LOCAL_CONFIG
-              value: |
-                ui = true
-                disable_mlock = true
-                
-                listener "tcp" {
-                  address = "0.0.0.0:8200"
-                  tls_disable = 1
-                }
-                
-                storage "raft" {
-                  path = "/vault/data"
-                  node_id = "$(POD_NAME)"
-                }
-                
-                api_addr = "http://vault.vault.svc.cluster.local:8200"
-                cluster_addr = "http://$(POD_NAME).vault-internal.vault.svc.cluster.local:8201"
           ports:
             - name: http
               containerPort: 8200
@@ -85,7 +100,9 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /vault/data
-  
+            - name: config
+              mountPath: /vault/config
+
   volumeClaimTemplates:
     - metadata:
         name: data
@@ -94,3 +111,13 @@ spec:
         resources:
           requests:
             storage: 2Gi
+
+  # tmp volume для конфига
+  volumeClaimTemplates:
+    - metadata:
+        name: config
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 100Mi
