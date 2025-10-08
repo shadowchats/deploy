@@ -38,11 +38,7 @@ spec:
       containers:
         - name: vault
           image: hashicorp/vault:1.17.6
-          command:
-            - vault
-            - server
-            - -config=/dev/stdin
-          stdin: true
+          command: ["vault", "server"]
           env:
             - name: SKIP_CHOWN
               value: "true"
