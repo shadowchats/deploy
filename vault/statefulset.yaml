@@ -111,9 +111,6 @@ spec:
         resources:
           requests:
             storage: 2Gi
-
-  # tmp volume для конфига
-  volumeClaimTemplates:
     - metadata:
         name: config
       spec:
