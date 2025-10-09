@@ -10,13 +10,11 @@ metadata:
     argocd-image-updater.argoproj.io/shadowchats.allow-tags: regexp:^api-gateway-v[0-9]+\.[0-9]+\.[0-9]+$
     argocd-image-updater.argoproj.io/shadowchats.pull-secret: pullsecret:argocd/dockerhub-secret
     argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/app-type: git
-    argocd-image-updater.argoproj.io/git-branch: master
 spec:
   project: default
   source:
     repoURL: https://github.com/shadowchats/deploy.git
-    targetRevision: HEAD
+    targetRevision: master
     path: api-gateway
     kustomize: {}
   destination:
