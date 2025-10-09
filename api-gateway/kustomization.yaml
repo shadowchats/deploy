@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - configmap-template.yaml
+  - deployment.yaml
+  - hpa.yaml
+  - ingress.yaml
+  - service.yaml
+  - vault-agent-config.yaml
+
+images:
+  - name: one290/shadowchats
+    newName: one290/shadowchats
+    newTag: api-gateway-v0.0.0
