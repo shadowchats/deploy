@@ -35,6 +35,13 @@ spec:
               mountPath: /vault/templates
             - name: vault-secrets
               mountPath: /vault/secrets
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
 
       containers:
         - name: authentication
@@ -78,6 +85,13 @@ spec:
               mountPath: /vault/templates
             - name: vault-secrets
               mountPath: /vault/secrets
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
 
       volumes:
         - name: vault-config-init
