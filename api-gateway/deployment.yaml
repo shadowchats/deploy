@@ -29,6 +29,7 @@ spec:
             - name: VAULT_ADDR
               value: "http://vault.vault.svc.cluster.local:8200"
           volumeMounts:
+            # Копия HCL в writable emptyDir
             - name: vault-config-init
               mountPath: /vault/config
             - name: vault-templates
@@ -79,6 +80,7 @@ spec:
             - name: VAULT_ADDR
               value: "http://vault.vault.svc.cluster.local:8200"
           volumeMounts:
+            # Копия HCL в writable emptyDir
             - name: vault-config-sidecar
               mountPath: /vault/config
             - name: vault-templates
@@ -94,12 +96,11 @@ spec:
               memory: "256Mi"
 
       volumes:
+        # writable emptyDir для initContainer и sidecar
         - name: vault-config-init
-          configMap:
-            name: vault-agent-api-gateway-init
+          emptyDir: {}
         - name: vault-config-sidecar
-          configMap:
-            name: vault-agent-api-gateway-sidecar
+          emptyDir: {}
         - name: vault-templates
           configMap:
             name: vault-templates-api-gateway
