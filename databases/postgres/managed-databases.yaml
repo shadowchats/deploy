@@ -1,0 +1,12 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ManagedDatabase
+metadata:
+  name: databases-postgres-authentication-db
+  namespace: databases
+spec:
+  cluster:
+    name: databases-postgres
+  name: authentication
+  owner: authentication
+  secret:
+    name: databases-postgres-authentication-db-secret
