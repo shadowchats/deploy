@@ -3,13 +3,11 @@ kind: Kustomization
 
 resources:
   - configmap-template.yaml
+  - vault-agent-config.yaml
+  - migrate-job.yaml
   - deployment.yaml
   - hpa.yaml
-  - migrate-job.yaml
-  - pgbouncer.yaml
-  - postgres.yaml
   - service.yaml
-  - vault-agent-config.yaml
 
 images:
   - name: one290/shadowchats
