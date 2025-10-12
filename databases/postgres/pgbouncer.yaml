@@ -9,11 +9,11 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Pooler
 metadata:
-  name: authentication-pgbouncer-rw
-  namespace: shadowchats
+  name: databases-pgbouncer-rw
+  namespace: databases
 spec:
   cluster:
-    name: authentication-postgres
+    name: databases-postgres
   instances: 2
   type: rw
   pgbouncer:
@@ -25,11 +25,11 @@ spec:
 apiVersion: postgresql.cnpg.io/v1
 kind: Pooler
 metadata:
-  name: authentication-pgbouncer-ro
-  namespace: shadowchats
+  name: databases-pgbouncer-ro
+  namespace: databases
 spec:
   cluster:
-    name: authentication-postgres
+    name: databases-postgres
   instances: 2
   type: ro
   pgbouncer:
