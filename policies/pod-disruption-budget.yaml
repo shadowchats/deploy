@@ -19,3 +19,38 @@ spec:
   selector:
     matchLabels:
       app: authentication
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: databases-postgres-pdb
+  namespace: databases
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      postgres.cnpg.io/cluster: databases-postgres
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: databases-postgres-pgbouncer-rw-pdb
+  namespace: databases
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      pgbouncer.cnpg.io/cluster: databases-postgres
+      pgbouncer.cnpg.io/type: rw
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: databases-postgres-pgbouncer-ro-pdb
+  namespace: databases
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      pgbouncer.cnpg.io/cluster: databases-postgres
+      pgbouncer.cnpg.io/type: ro
