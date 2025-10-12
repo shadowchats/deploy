@@ -20,6 +20,6 @@ spec:
       database: postgres
       owner: postgres
       secret:
-        name: postgres-main-secret
+        name: databases-postgres-secret
   monitoring:
     enablePodMonitor: true
