@@ -77,7 +77,7 @@ For questions about licensing or to request source code:
 27. `curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64` (может зафризиться после успешного скачивания - подожди две минутки и смело Ctrl + C)
 28. `sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd`
 29. `rm argocd-linux-amd64`
-30.` argocd admin initial-password -n argocd`, записать полученный пароль
+30. `argocd admin initial-password -n argocd`, записать полученный пароль
 31. `kubectl -n argocd patch cm argocd-cmd-params-cm --type merge --patch-file ./argocd/cmd-params-cm-patch.json`
 32. `kubectl -n argocd rollout restart deployment argocd-server`
 33. `kubectl apply -f ./argocd/ingress.yaml`
