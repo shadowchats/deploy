@@ -3,11 +3,11 @@ kind: Kustomization
 
 resources:
   - configmap-template.yaml
+  - vault-agent-config.yaml
   - deployment.yaml
   - hpa.yaml
-  - ingress.yaml
   - service.yaml
-  - vault-agent-config.yaml
+  - ingress.yaml
 
 images:
   - name: one290/shadowchats
