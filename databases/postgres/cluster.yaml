@@ -21,6 +21,13 @@ spec:
       owner: postgres
       secret:
         name: databases-postgres-secret
+  managed:
+    roles:
+      - name: authentication
+        ensure: present
+        login: true
+        passwordSecret:
+          name: databases-postgres-authentication-db-secret
   monitoring:
     enablePodMonitor: true
 
