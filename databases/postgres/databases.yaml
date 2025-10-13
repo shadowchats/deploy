@@ -1,5 +1,5 @@
 apiVersion: postgresql.cnpg.io/v1
-kind: ManagedDatabase
+kind: Database
 metadata:
   name: databases-postgres-authentication-db
   namespace: databases
