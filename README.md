@@ -41,9 +41,9 @@ For questions about licensing or to request source code:
 3. Склонировать репозиторий deploy и перейти в его папку
 4. `kubectl apply -f ./namespaces`
 5. Прописать корректные значения в манифесты секретов, `kubectl apply -f ./secrets`
-6. `kubectl -f ./databases/postgres/cluster.yaml`, дождаться развертывания
-7. `kubectl -f ./databases/postgres/managed-databases.yaml`, дождаться развертывания
-8. `kubectl -f ./databases/postgres/pgbouncer.yaml`, дождаться развертывания
+6. `kubectl apply -f ./databases/postgres/cluster.yaml`, дождаться развертывания
+7. `kubectl apply -f ./databases/postgres/managed-databases.yaml`, дождаться развертывания
+8. `kubectl apply -f ./databases/postgres/pgbouncer.yaml`, дождаться развертывания
 9. `kubectl apply -f ./rbac`
 10. `kubectl apply -f ./serviceaccounts`
 11. `kubectl apply -f ./vault`
