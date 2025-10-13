@@ -18,13 +18,13 @@ spec:
           env:
             - name: VAULT_ADDR
               value: "http://vault.vault.svc.cluster.local:8200"
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "250m"
-              memory: "256Mi"
+          #resources:
+            #requests:
+              #cpu: "100m"
+              #memory: "128Mi"
+            #limits:
+              #cpu: "250m"
+              #memory: "256Mi"
           volumeMounts:
             - name: vault-config-init
               mountPath: /vault/config
@@ -37,13 +37,13 @@ spec:
         - name: migrate
           image: one290/shadowchats:authentication-v0.0.0
           command: ["dotnet", "Shadowchats.Authentication.Presentation.dll", "migrate"]
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "250m"
-              memory: "256Mi"
+          #resources:
+            #requests:
+              #cpu: "100m"
+              #memory: "128Mi"
+            #limits:
+              #cpu: "250m"
+              #memory: "256Mi"
           volumeMounts:
             - name: vault-secrets
               mountPath: /app/appsettings.json
