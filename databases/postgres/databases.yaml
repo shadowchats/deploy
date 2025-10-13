@@ -8,5 +8,3 @@ spec:
     name: databases-postgres
   name: authentication
   owner: authentication
-  secret:
-    name: databases-postgres-authentication-db-secret
