@@ -35,13 +35,13 @@ spec:
               mountPath: /vault/templates
             - name: vault-secrets
               mountPath: /vault/secrets
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "250m"
-              memory: "256Mi"
+          #resources:
+            #requests:
+              #cpu: "100m"
+              #memory: "128Mi"
+            #limits:
+              #cpu: "250m"
+              #memory: "256Mi"
 
       containers:
         - name: api-gateway
@@ -64,13 +64,13 @@ spec:
             - name: vault-secrets
               mountPath: /app/appsettings.json
               subPath: appsettings.json
-          resources:
-            requests:
-              cpu: "250m"
-              memory: "256Mi"
-            limits:
-              cpu: "1000m"
-              memory: "1Gi"
+          #resources:
+            #requests:
+              #cpu: "250m"
+              #memory: "256Mi"
+            #limits:
+              #cpu: "1000m"
+              #memory: "1Gi"
 
         - name: vault-agent-sidecar
           image: hashicorp/vault:1.17.6
@@ -85,13 +85,13 @@ spec:
               mountPath: /vault/templates
             - name: vault-secrets
               mountPath: /vault/secrets
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "128Mi"
-            limits:
-              cpu: "250m"
-              memory: "256Mi"
+          #resources:
+            #requests:
+              #cpu: "100m"
+              #memory: "128Mi"
+            #limits:
+              #cpu: "250m"
+              #memory: "256Mi"
 
       volumes:
         - name: vault-config-init
