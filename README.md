@@ -43,7 +43,7 @@ For questions about licensing or to request source code:
 5. Прописать корректные значения в манифесты секретов, `kubectl apply -f ./secrets`
 6. `kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.0.yaml`, дождаться установки
 7. `kubectl apply -f ./databases/postgres/cluster.yaml`, дождаться развертывания
-8. `kubectl apply -f ./databases/postgres/managed-databases.yaml`, дождаться развертывания
+8. `kubectl apply -f ./databases/postgres/databases.yaml`, дождаться развертывания
 9. `kubectl apply -f ./databases/postgres/pgbouncer.yaml`, дождаться развертывания
 10. `kubectl apply -f ./rbac`
 11. `kubectl apply -f ./serviceaccounts`
