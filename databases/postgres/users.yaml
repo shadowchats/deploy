@@ -1,0 +1,10 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: User
+metadata:
+  name: authentication
+  namespace: databases
+spec:
+  cluster:
+    name: databases-postgres
+  passwordSecret:
+    name: databases-postgres-authentication-db-secret
