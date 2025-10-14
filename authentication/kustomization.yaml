@@ -13,17 +13,3 @@ images:
   - name: one290/shadowchats
     newName: one290/shadowchats
     newTag: authentication-v0.0.0
-    
-patchesStrategicMerge:
-  - |-
-    apiVersion: batch/v1
-    kind: Job
-    metadata:
-      name: authentication-migrate
-      namespace: shadowchats
-    spec:
-      template:
-        spec:
-          containers:
-          - name: migrate
-            image: one290/shadowchats:authentication-v0.0.0
