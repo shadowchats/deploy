@@ -11,8 +11,12 @@ data:
         prefix: docker.io
         ping: yes
         credentials: secret:argocd/dockerhub-secret
+
     git:
       write-back-method: git
+      commit-message-template: "chore: update image {{ .AppName }} to {{ .ImageTag }}"
+      user: ArgoCD Image Updater
+      email: image-updater@shadowchats.io
       repos:
         - url: https://github.com/shadowchats/deploy.git
           usernameSecret:
@@ -21,3 +25,5 @@ data:
           passwordSecret:
             name: argocd-image-updater-git-creds
             key: password
+
+    allow-k8s-types: Deployment,Job
