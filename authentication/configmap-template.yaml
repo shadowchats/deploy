@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: vault-templates-authentication
   namespace: shadowchats
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 data:
   authentication-appsettings.json.tpl: |
     {
