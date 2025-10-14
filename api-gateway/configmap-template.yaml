@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: vault-templates-api-gateway
   namespace: shadowchats
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 data:
   api-gateway-appsettings.json.tpl: |
     {
