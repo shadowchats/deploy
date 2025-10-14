@@ -8,9 +8,9 @@ data:
     registries:
       - name: DockerHub
         api_url: https://index.docker.io/v1/
-        prefix: docker.io
+        prefix: registry-1.docker.io
         ping: yes
-        credentials: secret:argocd/dockerhub-secret
+        credentials: secret:dockerhub-secret
 
     git:
       write-back-method: git
