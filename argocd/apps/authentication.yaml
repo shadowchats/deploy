@@ -7,7 +7,7 @@ metadata:
     argocd-image-updater.argoproj.io/image-list: shadowchats=one290/shadowchats
     argocd-image-updater.argoproj.io/shadowchats.update-strategy: semver
     argocd-image-updater.argoproj.io/shadowchats.allow-tags: regexp:^authentication-v[0-9]+\.[0-9]+\.[0-9]+$
-    argocd-image-updater.argoproj.io/shadowchats.pull-secret: pullsecret:argocd/dockerhub-secret
+    argocd-image-updater.argoproj.io/shadowchats.pull-secret: pullSecret:dockerhub-secret
     argocd-image-updater.argoproj.io/write-back-method: git
 spec:
   project: default
