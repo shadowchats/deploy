@@ -3,6 +3,8 @@ kind: ConfigMap
 metadata:
   name: vault-agent-api-gateway-sidecar
   namespace: shadowchats
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 data:
   vault-agent.hcl: |
     auto_auth {
@@ -23,6 +25,8 @@ kind: ConfigMap
 metadata:
   name: vault-agent-api-gateway-init
   namespace: shadowchats
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 data:
   vault-agent.hcl: |
     auto_auth {
