@@ -59,7 +59,7 @@ For questions about licensing or to request source code:
 21. `vault kv put secret/api-gateway jwt_secret="<JWT Key HS256>"`
 22. `vault kv put secret/authentication jwt_secret="<JWT Key HS256>" postgres_password="<пароль PostgreSQL из Step 5>"`
 23. `vault auth enable kubernetes`
-24. `vault write auth/kubernetes/config kubernetes_host="https://kubernetes.default.svc.cluster.local:443 token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"`
+24. `vault write auth/kubernetes/config kubernetes_host="https://kubernetes.default.svc.cluster.local:443" token_reviewer_jwt="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" kubernetes_ca_cert=@/var/run/secrets/kubernetes.io/serviceaccount/ca.crt`
 25. ```
     vault policy write api-gateway-policy - <<EOF
     path "secret/data/api-gateway" {
