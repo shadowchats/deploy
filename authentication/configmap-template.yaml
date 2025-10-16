@@ -14,7 +14,7 @@ data:
         "Audience": "ShadowchatsUsers"
       },
       "PostgresConnectionStrings": {
-        "ReadWrite": "Host=databases-pgbouncer-rw.databases.svc.cluster.local;Port=5432;Database=authentication;Username=authentication;Password={{ with secret "secret/authentication" }}{{ .Data.data.postgres_password }}{{ end }}",
-        "ReadOnly":  "Host=databases-pgbouncer-ro.databases.svc.cluster.local;Port=5432;Database=authentication;Username=authentication;Password={{ with secret "secret/authentication" }}{{ .Data.data.postgres_password }}{{ end }}"
+        "ReadWrite": "Host=databases-postgres-pgbouncer-rw.databases.svc.cluster.local;Port=5432;Database=authentication;Username=authentication;Password={{ with secret "secret/authentication" }}{{ .Data.data.postgres_password }}{{ end }}",
+        "ReadOnly":  "Host=databases-postgres-pgbouncer-ro.databases.svc.cluster.local;Port=5432;Database=authentication;Username=authentication;Password={{ with secret "secret/authentication" }}{{ .Data.data.postgres_password }}{{ end }}"
       }
     }
