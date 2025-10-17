@@ -20,9 +20,8 @@ data:
         "Audience": "ShadowchatsUsers"
       },
       "ReverseProxy": {
-        "Routes": [
-          {
-            "RouteId": "authentication-routes",
+        "Routes": {
+          "authentication-route": {
             "ClusterId": "authentication",
             "Match": {
               "Path": "/authentication/{**catch-all}"
@@ -36,10 +35,9 @@ data:
               }
             ]
           }
-        ],
-        "Clusters": [
-          {
-            "ClusterId": "authentication",
+        },
+        "Clusters": {
+          "authentication": {
             "LoadBalancingPolicy": "LeastRequests",
             "HealthCheck": {
               "Active": {
@@ -61,8 +59,13 @@ data:
               "VersionPolicy": "RequestVersionExact",
               "AllowResponseBuffering": false,
               "RequestTimeout": "00:00:30"
+            },
+            "Destinations": {
+              "primary": {
+                "Address": "http://authentication.shadowchats.svc.cluster.local:6000"
+              }
             }
           }
-        ]
+        }
       }
     }
