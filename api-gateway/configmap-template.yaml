@@ -20,8 +20,9 @@ data:
         "Audience": "ShadowchatsUsers"
       },
       "ReverseProxy": {
-        "Routes": {
-          "authentication-routes": {
+        "Routes": [
+          {
+            "RouteId": "authentication-routes",
             "ClusterId": "authentication",
             "Match": {
               "Path": "/authentication/{**catch-all}"
@@ -35,9 +36,10 @@ data:
               }
             ]
           }
-        },
-        "Clusters": {
-          "authentication": {
+        ],
+        "Clusters": [
+          {
+            "ClusterId": "authentication",
             "LoadBalancingPolicy": "LeastRequests",
             "HealthCheck": {
               "Active": {
@@ -61,6 +63,6 @@ data:
               "RequestTimeout": "00:00:30"
             }
           }
-        }
+        ]
       }
     }
