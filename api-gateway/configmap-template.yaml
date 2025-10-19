@@ -37,6 +37,18 @@ data:
                 "Set": "{Sub}"
               }
             ]
+          },
+          {
+            "RouteId": "authentication-route-unsafe",
+            "ClusterId": "authentication",
+            "Match": {
+              "Path": "/authentication-unsafe/{**catch-all}"
+            },
+            "Transforms": [
+              {
+                "PathRemovePrefix": "/authentication-unsafe"
+              }
+            ]
           }
         ],
         "Clusters": [
