@@ -9,7 +9,7 @@ metadata:
     argocd-image-updater.argoproj.io/shadowchats.allow-tags: regexp:^authentication-v[0-9]+\.[0-9]+\.[0-9]+$
     argocd-image-updater.argoproj.io/shadowchats.pull-secret: pullSecret:dockerhub-secret
     argocd-image-updater.argoproj.io/write-back-method: git
-    argocd-image-updater.argoproj.io/git-commit-template: chore: update image {{ .AppName }} to {{ .ImageTag }}
+    argocd-image-updater.argoproj.io/git-commit-template: "chore: update image {{ .AppName }} to {{ .ImageTag }}"
     argocd-image-updater.argoproj.io/git-username: ArgoCD Image Updater
     argocd-image-updater.argoproj.io/git-email: image-updater@shadowchats.io
     argocd-image-updater.argoproj.io/git-username-secret: argocd-image-updater-git-creds
