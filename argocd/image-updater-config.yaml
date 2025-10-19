@@ -4,7 +4,7 @@ metadata:
   name: argocd-image-updater-config
   namespace: argocd
 data:
-  config.yaml: |
+  registries.conf: |
     registries:
       - name: DockerHub
         api_url: https://index.docker.io/v1/
