@@ -7,7 +7,7 @@ data:
   registries.conf: |
     registries:
       - name: DockerHub
-        api_url: https://index.docker.io/v1/
+        api_url: https://registry-1.docker.io
         prefix: docker.io
         ping: yes
-        credentials: pullSecret:dockerhub-secret
+        credentials: pullsecret:argocd/dockerhub-secret
