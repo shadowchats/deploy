@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-nginx-controller
+  namespace: ingress-nginx
+  labels:
+    app.kubernetes.io/name: ingress-nginx
+    app.kubernetes.io/instance: ingress-nginx
+    app.kubernetes.io/component: controller
+data:
+  # включаем поддержку HTTP/2 на фронте
+  use-http2: "true"
+
+  # безопасность и таймауты
+  hsts: "false"
+  proxy-body-size: "0"
+  proxy-read-timeout: "3600"
+  proxy-send-timeout: "3600"
+
+  # соединения
+  keep-alive: "75"
+  keep-alive-requests: "10000"
+
+  # логирование для отладки
+  enable-access-log: "true"
