@@ -9,14 +9,10 @@ metadata:
     argocd-image-updater.argoproj.io/shadowchats.kustomize.image-name: one290/shadowchats
     argocd-image-updater.argoproj.io/shadowchats.allow-tags: regexp:^authentication-v[0-9]+\.[0-9]+\.[0-9]+$
     argocd-image-updater.argoproj.io/shadowchats.pull-secret: pullsecret:argocd/dockerhub-secret
-    argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-creds
     argocd-image-updater.argoproj.io/git-commit-template: "chore: update image {{ .AppName }} {{ range .AppChanges -}} to {{ .NewTag }} {{ end }}"
     argocd-image-updater.argoproj.io/git-username: ArgoCD Image Updater
     argocd-image-updater.argoproj.io/git-email: image-updater@shadowchats.io
-    argocd-image-updater.argoproj.io/git-username-secret: argocd-image-updater-git-creds
-    argocd-image-updater.argoproj.io/git-username-secret-key: username
-    argocd-image-updater.argoproj.io/git-password-secret: argocd-image-updater-git-creds
-    argocd-image-updater.argoproj.io/git-password-secret-key: password
     argocd-image-updater.argoproj.io/allow-k8s-types: Deployment,Job
 spec:
   project: default
