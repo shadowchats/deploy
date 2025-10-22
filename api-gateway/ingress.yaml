@@ -20,7 +20,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: grpc.shadowchats.local
+    - host: *.grpc.shadowchats.local
       http:
         paths:
           - path: /
@@ -45,7 +45,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: web.shadowchats.local
+    - host: *.web.shadowchats.local
       http:
         paths:
           - path: /
