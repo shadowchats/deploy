@@ -48,7 +48,7 @@ data:
         "Clusters": [
           {
             "ClusterId": "authentication",
-            "HttpRequest": {
+            "HttpClient": {
               "Version": "2",
               "VersionPolicy": "RequestVersionOrLower"
             }
