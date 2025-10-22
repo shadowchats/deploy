@@ -25,13 +25,11 @@ data:
             "RouteId": "authentication-route",
             "ClusterId": "authentication",
             "Match": {
-              "Path": "/authentication/{**catch-all}"
+              "Hosts": [ "shadowchats.authentication.local" ]
+              "Path": "/{**catch-all}"
             },
             "AuthorizationPolicy": "AccountPolicy",
             "Transforms": [
-              {
-                "PathRemovePrefix": "/authentication"
-              },
               {
                 "RequestHeader": "X-Account-Id",
                 "Set": "{Sub}"
@@ -42,13 +40,9 @@ data:
             "RouteId": "authentication-route-unsafe",
             "ClusterId": "authentication",
             "Match": {
-              "Path": "/authentication-unsafe/{**catch-all}"
-            },
-            "Transforms": [
-              {
-                "PathRemovePrefix": "/authentication-unsafe"
-              }
-            ]
+              "Hosts": [ "shadowchats.authentication-unsafe.local" ]
+              "Path": "/{**catch-all}"
+            }
           }
         ],
         "Clusters": [
