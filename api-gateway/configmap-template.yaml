@@ -25,7 +25,7 @@ data:
             "RouteId": "authentication-route",
             "ClusterId": "authentication",
             "Match": {
-              "Hosts": [ "authentication.grpc.shadowchats.local", "authentication.web.shadowchats.local" ]
+              "Hosts": [ "authentication.grpc.shadowchats.local", "authentication.web.shadowchats.local" ],
               "Path": "/{**catch-all}"
             },
             "AuthorizationPolicy": "AccountPolicy",
@@ -40,7 +40,7 @@ data:
             "RouteId": "authentication-route-unsafe",
             "ClusterId": "authentication",
             "Match": {
-              "Hosts": [ "authentication-unsafe.grpc.shadowchats.local", "authentication-unsafe.web.shadowchats.local" ]
+              "Hosts": [ "authentication-unsafe.grpc.shadowchats.local", "authentication-unsafe.web.shadowchats.local" ],
               "Path": "/{**catch-all}"
             }
           }
