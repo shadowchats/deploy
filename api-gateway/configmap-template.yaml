@@ -74,10 +74,40 @@ data:
         ],
         "Clusters": [
           {
-            "ClusterId": "authentication-http1"
+            "ClusterId": "authentication-http1",
+            "LoadBalancingPolicy" : "LeastRequests",
+            "HealthCheck": {
+              "Active": {
+                "Enabled": "true",
+                "Interval": "00:00:10",
+                "Timeout": "00:00:10",
+                "Policy": "ConsecutiveFailures",
+                "Path": "/ready"
+              },
+              "Passive": {
+                "Enabled": true,
+                "Policy" : "TransportFailureRateHealthPolicy",
+                "ReactivationPeriod" : "00:00:10"
+              }
+            }
           },
           {
-            "ClusterId": "authentication-http2"
+            "ClusterId": "authentication-http2",
+            "LoadBalancingPolicy" : "LeastRequests",
+            "HealthCheck": {
+              "Active": {
+                "Enabled": "true",
+                "Interval": "00:00:10",
+                "Timeout": "00:00:10",
+                "Policy": "ConsecutiveFailures",
+                "Path": "/ready"
+              },
+              "Passive": {
+                "Enabled": true,
+                "Policy" : "TransportFailureRateHealthPolicy",
+                "ReactivationPeriod" : "00:00:10"
+              }
+            }
           }
         ]
       }
