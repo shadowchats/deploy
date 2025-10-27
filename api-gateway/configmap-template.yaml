@@ -26,7 +26,7 @@ data:
             "ClusterId": "authentication-http1",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway1.local" ],
-              "Path": "/authentication.{**catch-all}"
+              "Path": "/{path:regex(^authentication\.[a-zA-Z_][\w]*/[A-Z][A-Za-z0-9_]*$)}"
             },
             "Order": 2,
             "AuthorizationPolicy": "AccountPolicy",
@@ -42,7 +42,7 @@ data:
             "ClusterId": "authentication-http2",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway2.local" ],
-              "Path": "/authentication.{**catch-all}"
+              "Path": "/{path:regex(^authentication\.[a-zA-Z_][\w]*/[A-Z][A-Za-z0-9_]*$)}"
             },
             "Order": 2,
             "AuthorizationPolicy": "AccountPolicy",
@@ -58,7 +58,7 @@ data:
             "ClusterId": "authentication-http1",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway1.local" ],
-              "Path": "/authentication.{**catch-all}"
+              "Path": "/{path:regex(^authentication\.[a-zA-Z_][\w]*/[A-Z][A-Za-z0-9_]*$)}"
             },
             "Order": 1
           },
@@ -67,7 +67,7 @@ data:
             "ClusterId": "authentication-http2",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway2.local" ],
-              "Path": "/authentication.{**catch-all}"
+              "Path": "/{path:regex(^authentication\.[a-zA-Z_][\w]*/[A-Z][A-Za-z0-9_]*$)}"
             },
             "Order": 1
           }
