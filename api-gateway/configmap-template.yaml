@@ -23,8 +23,9 @@ data:
         "Routes": [
           {
             "RouteId": "authentication-route",
-            "ClusterId": "authentication",
+            "ClusterId": "authentication-http1",
             "Match": {
+              "Hosts": [ "shadowchats.api.gateway1.local" ],
               "Path": "/authentication.{**catch-all}"
             },
             "Order": 2,
@@ -37,9 +38,35 @@ data:
             ]
           },
           {
-            "RouteId": "authentication-route-unsafe",
-            "ClusterId": "authentication",
+            "RouteId": "authentication-route",
+            "ClusterId": "authentication-http2",
             "Match": {
+              "Hosts": [ "shadowchats.api.gateway2.local" ],
+              "Path": "/authentication.{**catch-all}"
+            },
+            "Order": 2,
+            "AuthorizationPolicy": "AccountPolicy",
+            "Transforms": [
+              {
+                "RequestHeader": "X-Account-Id",
+                "Set": "{Sub}"
+              }
+            ]
+          }
+          {
+            "RouteId": "authentication-route-unsafe",
+            "ClusterId": "authentication-http1",
+            "Match": {
+              "Hosts": [ "shadowchats.api.gateway1.local" ],
+              "Path": "/authentication.{**catch-all}"
+            },
+            "Order": 1
+          },
+          {
+            "RouteId": "authentication-route-unsafe",
+            "ClusterId": "authentication-http2",
+            "Match": {
+              "Hosts": [ "shadowchats.api.gateway2.local" ],
               "Path": "/authentication.{**catch-all}"
             },
             "Order": 1
@@ -47,10 +74,10 @@ data:
         ],
         "Clusters": [
           {
-            "ClusterId": "authentication",
-            "HttpRequest": {
-              "VersionPolicy": "RequestVersionExact"
-            }
+            "ClusterId": "authentication-http1"
+          },
+          {
+            "ClusterId": "authentication-http2"
           }
         ]
       }
