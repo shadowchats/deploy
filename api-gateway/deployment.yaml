@@ -47,17 +47,20 @@ spec:
         - name: api-gateway
           image: one290/shadowchats:api-gateway-v0.0.0
           ports:
-            - containerPort: 5000
+            - name: http1
+              containerPort: 8080
+            - name: http2
+              containerPort: 8081
           livenessProbe:
             httpGet:
               path: /health
-              port: 5000
+              port: 8080
             initialDelaySeconds: 10
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /ready
-              port: 5000
+              port: 8080
             initialDelaySeconds: 5
             periodSeconds: 5
           volumeMounts:
