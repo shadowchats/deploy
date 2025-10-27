@@ -25,9 +25,9 @@ data:
             "RouteId": "authentication-route",
             "ClusterId": "authentication",
             "Match": {
-              "Hosts": [ "authentication.grpc.shadowchats.local", "authentication.web.shadowchats.local" ],
-              "Path": "/{**catch-all}"
+              "Path": "/authentication.{**catch-all}"
             },
+            "Order": 2,
             "AuthorizationPolicy": "AccountPolicy",
             "Transforms": [
               {
@@ -40,17 +40,16 @@ data:
             "RouteId": "authentication-route-unsafe",
             "ClusterId": "authentication",
             "Match": {
-              "Hosts": [ "authentication-unsafe.grpc.shadowchats.local", "authentication-unsafe.web.shadowchats.local" ],
-              "Path": "/{**catch-all}"
-            }
+              "Path": "/authentication.{**catch-all}"
+            },
+            "Order": 1
           }
         ],
         "Clusters": [
           {
             "ClusterId": "authentication",
-            "HttpClient": {
-              "Version": "2",
-              "VersionPolicy": "RequestVersionOrLower"
+            "HttpRequest": {
+              "VersionPolicy": "RequestVersionExact"
             }
           }
         ]
