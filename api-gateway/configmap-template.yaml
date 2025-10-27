@@ -22,7 +22,7 @@ data:
       "ReverseProxy": {
         "Routes": [
           {
-            "RouteId": "authentication-route",
+            "RouteId": "authentication-route-http1",
             "ClusterId": "authentication-http1",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway1.local" ],
@@ -38,7 +38,7 @@ data:
             ]
           },
           {
-            "RouteId": "authentication-route",
+            "RouteId": "authentication-route-http2",
             "ClusterId": "authentication-http2",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway2.local" ],
@@ -52,9 +52,9 @@ data:
                 "Set": "{Sub}"
               }
             ]
-          }
+          },
           {
-            "RouteId": "authentication-route-unsafe",
+            "RouteId": "authentication-route-unsafe-http1",
             "ClusterId": "authentication-http1",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway1.local" ],
@@ -63,7 +63,7 @@ data:
             "Order": 1
           },
           {
-            "RouteId": "authentication-route-unsafe",
+            "RouteId": "authentication-route-unsafe-http2",
             "ClusterId": "authentication-http2",
             "Match": {
               "Hosts": [ "shadowchats.api.gateway2.local" ],
