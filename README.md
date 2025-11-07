@@ -86,6 +86,9 @@ For questions about licensing or to request source code:
 36. `kubectl apply -f ./argocd/root-app.yaml`
 37. Зайти в ArgoCD UI: убедиться, что все приложения подтянулись; поменять пароль
 38. Опционально, необходимо раскоментировать секции "resources" в манифестах "deployment.yaml" в папках микросервисов: `kubectl apply -f ./policies`
+39. `kubectl apply -f ./observability/loki`
+40. `kubectl apply -f ./observability/promtail`
+41. `kubectl apply -f ./observability/grafana`
 
 Примечания:
 - Port-Forwarding: `kubectl port-forward -n ingress-nginx --address 0.0.0.0 svc/ingress-nginx-controller 8080:80 8443:443`; в отдельной консоли
